@@ -64,6 +64,9 @@ class ExampleTest extends TestCase
         $this->patch(route('admin.orders.status', $order), ['status' => 'completed'])->assertSessionHas('success');
         $this->assertSame('completed', $order->fresh()->status);
 
+        $this->get('/admin/menus')->assertOk()
+            ->assertSee('disabled aria-describedby="delete-note-'.$menu->id.'"', false)
+            ->assertSee('Menu ini sudah dipesan.');
         $menu->update(['price' => 30000]);
         $this->delete(route('admin.menus.destroy', $menu))->assertRedirect(route('admin.menus'));
         $this->assertFalse($menu->fresh()->is_active);
@@ -120,6 +123,9 @@ class ExampleTest extends TestCase
         $menu = Menu::whereName('Menu Baru')->sole();
         $firstPath = $menu->image_path;
         Storage::disk('public')->assertExists($firstPath);
+        $this->withoutVite()->get('/admin/menus')->assertOk()
+            ->assertSee('Hapus menu ini?')
+            ->assertDontSee('delete-note-'.$menu->id);
         $this->patch(route('admin.menus.update', $menu), $data)->assertRedirect(route('admin.menus'));
         $this->assertSame($firstPath, $menu->fresh()->image_path);
 
