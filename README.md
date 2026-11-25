@@ -1,6 +1,6 @@
 # Workshop Catering
 
-Starter praktik pemesanan katering dengan Laravel 13, Blade, MySQL, Vite, Tailwind CSS, dan SweetAlert2. Halaman awal `/` bisa dibuka setelah aset dibangun. Lima halaman bisnis dan login dua role dikerjakan setelah migration workshop.
+Starter praktik pemesanan katering dengan Laravel 13, Blade, MySQL, Vite, Tailwind CSS, dan SweetAlert2. Branch `dev-bintang` berisi implementasi login dan lima halaman bisnis. Dashboard admin memakai data pesanan dan menu dari database.
 
 ## Prasyarat
 
@@ -17,6 +17,7 @@ Starter praktik pemesanan katering dengan Laravel 13, Blade, MySQL, Vite, Tailwi
 ```sh
 git clone https://github.com/bintangawan/workshop-catering.git
 cd workshop-catering
+git switch dev-bintang
 composer install
 npm ci
 ```
@@ -37,9 +38,9 @@ Buka [http://127.0.0.1:8000](http://127.0.0.1:8000). Saat mengedit Blade dan ase
 | --- | --- |
 | `routes/web.php` | Route web dan pengelompokan akses admin/pelanggan saat praktik |
 | `app/Http/Controllers/` | Controller HTTP. Validasi input form dan respons berada di sini untuk praktik awal. |
-| `app/Services/` | Tempat `OrderService` saat aturan pemesanan dibangun, termasuk validasi ketersediaan dan pencatatan harga saat pesan |
+| `app/Services/CateringService.php` | Aturan pemesanan, hapus atau nonaktifkan menu, dan transisi status |
 | `app/Models/` | Model `User`, `Menu`, dan `Order` beserta relasi Eloquent |
-| `database/migrations/` | Migration dibuat manual saat praktik |
+| `database/migrations/` | Tiga migration yang dibuat pada tahap 1 |
 | `resources/views/layouts/app.blade.php` | Layout utama Blade yang memuat aset Vite secara global |
 | `resources/views/admin/` | Blade untuk pengelolaan menu dan pesanan masuk |
 | `resources/views/customer/` | Blade untuk katalog, formulir pemesanan, dan riwayat pelanggan |
@@ -68,8 +69,21 @@ Migration dibuat dalam urutan `users` (termasuk `role`), `menus` (`name`, `descr
 
 Versi rinci disimpan di `composer.lock` dan `package-lock.json` agar instalasi di laptop peserta konsisten.
 
-## Pratinjau tahap 2
+## Menjalankan backend tahap 3
 
-Di branch `dev-bintang`, buka `/` dan pilih **Admin** atau **Pelanggan**. Jalankan `npm ci`, `npm run build`, dan server Laravel seperti di atas. Pratinjau dapat dijalankan dengan MySQL dimatikan karena halaman menggunakan fixture di `resources/demo/catering.php`.
+Jalankan perintah ini setelah membuat database MySQL lokal dan menyesuaikan `.env`.
 
-Dashboard dan grafik memakai snapshot fixture. Perubahan menu simulasi berlaku sampai halaman dimuat ulang. Pesanan simulasi dan perubahan status tersedia di sesi peramban yang sama. Detail instruksi latihan tersedia di [prompt2.md](prompt2.md).
+```sh
+php artisan migrate --seed
+npm run build
+php artisan serve
+```
+
+Buka `/login`. Seeder menyediakan akun berikut pada lingkungan `local` atau `testing`.
+
+| Role | Email | Kata sandi |
+| --- | --- | --- |
+| Admin | `admin@catering.test` | `Workshop123!` |
+| Pelanggan | `pelanggan@catering.test` | `Workshop123!` |
+
+Seeder juga menambahkan tiga menu. Buat pesanan pertama dari akun pelanggan untuk melihat metrik dashboard terisi. Nilai pesanan pada dashboard mencakup ketiga status selama tujuh hari kalender terakhir (WIB). Jalankan `php artisan test` dengan ekstensi PDO SQLite untuk pengujian otomatis. Lihat [prompt3.md](prompt3.md) untuk peta file dan langkah pengerjaan. Prototipe dengan data dummy dapat dilihat pada commit `6a32291`.

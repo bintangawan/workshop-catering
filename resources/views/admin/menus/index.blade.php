@@ -3,48 +3,40 @@
 @section('content')
     <div class="page-heading">
         <div><h1>Kelola menu</h1><p>Atur menu, harga per porsi, dan ketersediaan di katalog.</p></div>
-        <button type="button" class="button" data-menu-form-open><x-icon name="plus" /> Tambah menu</button>
+        <a href="#menu-form" class="button"><x-icon name="plus" /> {{ $editingMenu ? 'Ke form edit' : 'Tambah menu' }}</a>
     </div>
-    <div class="menu-grid" data-menu-grid>
-        @foreach ($menus as $menu)
-            @php($hasOrders = collect($orders)->contains('menu_id', $menu['id']))
-            <article class="panel menu-card" data-menu-card>
+
+    <div class="menu-grid">
+        @forelse ($menus as $menu)
+            <article class="panel menu-card">
                 @include('components.menu-photo', ['menu' => $menu])
                 <div class="menu-body">
-                    <div class="menu-title"><h2 data-menu-name>{{ $menu['name'] }}</h2><span @class(['status', $menu['is_active'] ? 'status-completed' : 'status-neutral']) data-menu-status>{{ $menu['is_active'] ? 'Aktif' : 'Nonaktif' }}</span></div>
-                    <p data-menu-description>{{ $menu['description'] }}</p>
-                    <div class="menu-price"><strong data-menu-price>Rp{{ number_format($menu['price'], 0, ',', '.') }}</strong><small> / porsi</small></div>
+                    <div class="menu-title"><h2>{{ $menu->name }}</h2><span @class(['status', $menu->is_active ? 'status-completed' : 'status-neutral'])>{{ $menu->is_active ? 'Aktif' : 'Nonaktif' }}</span></div>
+                    <p>{{ $menu->description }}</p>
+                    <div class="menu-price"><strong>Rp{{ number_format($menu->price, 0, ',', '.') }}</strong><small> / porsi</small></div>
                     <div class="menu-actions">
-                        <button type="button" class="button button-small button-outline" data-menu-form-open data-menu="{{ json_encode($menu, JSON_THROW_ON_ERROR) }}">Edit</button>
-                        @if ($hasOrders)
-                            <button type="button" class="button button-small button-quiet" data-menu-toggle>{{ $menu['is_active'] ? 'Nonaktifkan' : 'Aktifkan' }}</button>
-                        @else
-                            <button type="button" class="button button-small button-quiet" data-menu-delete>Hapus</button>
+                        <a class="button button-small button-outline" href="{{ route('admin.menus', ['page' => $menus->currentPage(), 'edit' => $menu->id]).'#menu-form' }}">Edit</a>
+                        @if (!$menu->orders_exists || $menu->is_active)
+                            <form method="POST" action="{{ route('admin.menus.destroy', $menu) }}" data-confirm="{{ $menu->orders_exists ? 'Nonaktifkan menu ini?' : 'Hapus menu ini?' }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="button button-small button-quiet">{{ $menu->orders_exists ? 'Nonaktifkan' : 'Hapus' }}</button>
+                            </form>
                         @endif
                     </div>
                 </div>
             </article>
-        @endforeach
+        @empty
+            <p>Belum ada menu.</p>
+        @endforelse
     </div>
-    <template data-new-menu>
-        <article class="panel menu-card" data-menu-card>
-            <div class="menu-photo menu-placeholder"><x-icon name="menu" class="size-9" /></div>
-            <div class="menu-body">
-                <div class="menu-title"><h2 data-menu-name></h2><span class="status" data-menu-status></span></div>
-                <p data-menu-description></p>
-                <div class="menu-price"><strong data-menu-price></strong><small> / porsi</small></div>
-                <div class="menu-actions">
-                    <button type="button" class="button button-small button-outline" data-menu-form-open>Edit</button>
-                    <button type="button" class="button button-small button-quiet" data-menu-delete>Hapus</button>
-                </div>
-            </div>
-        </article>
-    </template>
-    <dialog class="menu-dialog" data-menu-dialog>
-        <form data-menu-form>
-            <div class="dialog-heading"><h2 data-dialog-title>Tambah menu</h2><button class="button button-small button-quiet" type="button" data-dialog-close>Tutup</button></div>
-            @include('admin.menus.form')
-            <button type="submit" class="button mt-3">Simpan simulasi</button>
-        </form>
-    </dialog>
+    <div class="mt-5">{{ $menus->links() }}</div>
+
+    <section class="panel order-form mt-5 max-w-xl" id="menu-form">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2>{{ $editingMenu ? 'Edit menu' : 'Tambah menu' }}</h2>
+            @if ($editingMenu)<a class="text-link" href="{{ route('admin.menus') }}#menu-form">Batal edit</a>@endif
+        </div>
+        @include('admin.menus.form')
+    </section>
 @endsection

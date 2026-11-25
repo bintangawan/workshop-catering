@@ -112,9 +112,6 @@
     .field input, .field textarea { @apply w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm font-medium; }
     .check-field { @apply inline-flex items-center gap-2 text-sm font-bold; }
     .check-field input { @apply size-4 accent-teal-700; }
-    .menu-dialog { @apply m-auto w-[min(93vw,440px)] max-w-none rounded-2xl bg-white p-5 shadow-2xl backdrop:bg-slate-950/45; }
-    .menu-dialog form { @apply grid gap-3; }
-    .dialog-heading { @apply flex items-center justify-between gap-3 pb-2; }
     .portal { @apply grid min-h-screen lg:grid-cols-[1.05fr_1fr]; }
     .portal-photo { @apply flex min-h-76 flex-col justify-between bg-slate-950 bg-cover bg-center p-6 text-white sm:p-10 lg:min-h-screen lg:p-13; background-image: linear-gradient(180deg, #061d1bbe 0%, #061d1b25 38%, #061d1be8 100%), var(--portal-image); }
     .portal-photo .brand strong { @apply text-teal-200; }
@@ -124,9 +121,4 @@
     .portal-options > div { @apply mx-auto w-full max-w-md; }
     .portal-options h1 { @apply mt-4; }
     .portal-options p { @apply mt-3 mb-6 max-w-sm text-sm leading-6 text-slate-600; }
-    .role-card { @apply mb-3 flex items-center gap-3 rounded-2xl border border-slate-200 px-3 py-4 text-teal-800 hover:border-teal-400 hover:bg-teal-50 sm:px-4; }
-    .role-card strong, .role-card small { @apply block; }
-    .role-card small { @apply mt-1 text-xs leading-5 text-slate-600; }
 }
-
-.button[hidden] { display: none; }

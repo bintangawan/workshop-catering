@@ -1,23 +1,32 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CateringController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('preview.home');
+Route::middleware('guest')->group(function () {
+    Route::view('/login', 'welcome')->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.store');
+});
 
-// GET routes for the Blade prototype. Fixtures are read from disk only.
-Route::prefix('preview')->name('preview.')->group(function () {
-    $demo = require resource_path('demo/catering.php');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [AuthController::class, 'home'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::view('/admin', 'admin.dashboard', $demo)->name('dashboard');
-    Route::view('/admin/menus', 'admin.menus.index', $demo)->name('admin.menus');
-    Route::view('/admin/orders', 'admin.orders.index', $demo)->name('admin.orders');
-    Route::view('/menus', 'customer.catalog.index', $demo)->name('catalog');
-    Route::view('/orders', 'customer.orders.index', $demo)->name('orders');
+    Route::prefix('admin')->name('admin.')->middleware('can:access-admin')->group(function () {
+        Route::get('/', [CateringController::class, 'dashboard'])->name('dashboard');
+        Route::get('/menus', [CateringController::class, 'menus'])->name('menus');
+        Route::post('/menus', [CateringController::class, 'storeMenu'])->name('menus.store');
+        Route::patch('/menus/{menu}', [CateringController::class, 'updateMenu'])->name('menus.update');
+        Route::delete('/menus/{menu}', [CateringController::class, 'deleteMenu'])->name('menus.destroy');
+        Route::get('/orders', [CateringController::class, 'incomingOrders'])->name('orders');
+        Route::patch('/orders/{order}/status', [CateringController::class, 'updateOrderStatus'])->name('orders.status');
+    });
 
-    Route::get('/menus/{menu}/order', function (int $menu) use ($demo) {
-        $selectedMenu = $demo['menus'][$menu] ?? null;
-        abort_unless($selectedMenu && $selectedMenu['is_active'], 404);
-
-        return view('customer.orders.create', $demo + ['menu' => $selectedMenu]);
-    })->whereNumber('menu')->name('order');
+    Route::middleware('can:access-customer')->group(function () {
+        Route::get('/menus', [CateringController::class, 'catalog'])->name('catalog');
+        Route::get('/menus/{menu}/order', [CateringController::class, 'orderForm'])->name('order');
+        Route::post('/menus/{menu}/order', [CateringController::class, 'storeOrder'])->name('order.store');
+        Route::get('/orders', [CateringController::class, 'customerOrders'])->name('orders');
+    });
 });

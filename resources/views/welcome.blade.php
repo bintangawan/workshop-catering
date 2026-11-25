@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Portal Demo')
+@section('title', 'Masuk')
 @section('shell')
     <main class="portal">
         <section class="portal-photo" style="--portal-image: url('{{ asset('demo/ayam-matah.webp') }}')">
@@ -12,19 +12,16 @@
         </section>
         <section class="portal-options">
             <div>
-                <span class="demo-pill">Pratinjau workshop</span>
-                <h1>Selamat datang</h1>
-                <p>Pilih peran untuk mencoba alur pemesanan katering dengan data contoh.</p>
-                <a class="role-card" href="{{ route('preview.dashboard') }}">
-                    <span class="metric-icon"><x-icon name="grid" /></span>
-                    <span><strong>Admin</strong><small>Kelola menu dan proses pesanan masuk.</small></span>
-                    <x-icon name="arrow" class="ml-auto" />
-                </a>
-                <a class="role-card" href="{{ route('preview.catalog') }}">
-                    <span class="metric-icon"><x-icon name="menu" /></span>
-                    <span><strong>Pelanggan</strong><small>Pilih menu dan lihat riwayat pesanan.</small></span>
-                    <x-icon name="arrow" class="ml-auto" />
-                </a>
+                <h1>Masuk ke Flup Catering</h1>
+                <p>Gunakan akun admin atau pelanggan yang diberikan untuk workshop.</p>
+                <form method="POST" action="{{ route('login.store') }}" class="grid gap-4">
+                    @csrf
+                    <label class="field"><span>Email</span><input name="email" type="email" maxlength="255" value="{{ old('email') }}" autocomplete="username" required></label>
+                    @error('email') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror
+                    <label class="field"><span>Kata sandi</span><input name="password" type="password" maxlength="255" autocomplete="current-password" required></label>
+                    @error('password') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror
+                    <button type="submit" class="button">Masuk <x-icon name="arrow" /></button>
+                </form>
             </div>
         </section>
     </main>
