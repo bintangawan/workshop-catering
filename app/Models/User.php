@@ -14,6 +14,8 @@ class User extends Authenticatable
 
     public const ROLE_CUSTOMER = 'customer';
 
+    protected $attributes = ['role' => self::ROLE_CUSTOMER];
+
     protected $fillable = ['name', 'email', 'password'];
 
     protected $hidden = ['password', 'remember_token'];
