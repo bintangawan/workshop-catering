@@ -4,13 +4,13 @@ Lanjutkan dari tahap 4 **Workshop Catering** di branch latihan. Fokus pada halam
 
 ## Alur CRUD
 
-| Operasi | Aksi admin | Hasil yang diharapkan |
-|---|---|---|
-| Create | Klik **Tambah menu**, isi form modal, dan simpan. | Menu muncul di daftar admin. Menu aktif juga tampil di katalog pelanggan. |
-| Read | Buka **Kelola Menu**. | Kartu menu menampilkan nama, deskripsi, harga, status aktif dan foto bila tersedia. |
-| Update | Klik **Edit** dan simpan perubahan dari modal. | Nama, harga, status atau foto diperbarui. Total pesanan yang lama tetap memakai harga saat dipesan. |
-| Delete | Klik **Hapus** pada menu yang belum pernah dipesan, lalu konfirmasi. | Menu hilang dari daftar dan katalog. File foto ikut dibersihkan jika ada. Jika dibatalkan, menu tetap ada. |
-| Nonaktifkan | Klik **Nonaktifkan** pada menu aktif yang punya pesanan. | Menu hilang dari katalog, tetapi tetap terlihat di admin bersama riwayat pesanan dan fotonya. |
+| Operasi     | Aksi admin                                                           | Hasil yang diharapkan                                                                                      |
+| ----------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Create      | Klik **Tambah menu**, isi form modal, dan simpan.                    | Menu muncul di daftar admin. Menu aktif juga tampil di katalog pelanggan.                                  |
+| Read        | Buka **Kelola Menu**.                                                | Kartu menu menampilkan nama, deskripsi, harga, status aktif dan foto bila tersedia.                        |
+| Update      | Klik **Edit** dan simpan perubahan dari modal.                       | Nama, harga, status atau foto diperbarui. Total pesanan yang lama tetap memakai harga saat dipesan.        |
+| Delete      | Klik **Hapus** pada menu yang belum pernah dipesan, lalu konfirmasi. | Menu hilang dari daftar dan katalog. File foto ikut dibersihkan jika ada. Jika dibatalkan, menu tetap ada. |
+| Nonaktifkan | Klik **Nonaktifkan** pada menu aktif yang punya pesanan.             | Menu hilang dari katalog, tetapi tetap terlihat di admin bersama riwayat pesanan dan fotonya.              |
 
 ## Perubahan yang dikerjakan
 
@@ -24,3 +24,10 @@ Lanjutkan dari tahap 4 **Workshop Catering** di branch latihan. Fokus pada halam
 - Sebagai admin, buat **menu baru** yang belum pernah dipesan. Cek daftar, edit dari modal, batalkan konfirmasi Hapus sekali, lalu konfirmasi Hapus. Pastikan menu dan foto hilang.
 - Buat pesanan dari akun pelanggan, lalu buka menu yang dipesan dari admin. Pastikan **Hapus** terlihat tetapi nonaktif, dan aksi **Nonaktifkan** tetap tersedia. Setelah nonaktif, cek katalog pelanggan dan cek pesanan lama masih tampil.
 - Jalankan `php artisan test` dan `npm run build`. Laporkan file yang diubah dan hasil cek Create, Read, Update, dan Delete per skenario. Berhenti setelah diff siap ditinjau sebelum commit atau push dari branch latihan.
+
+PROMPT:
+Lanjutkan dari tahap 4 Workshop Catering di branch latihan saya. Ikuti prompt5-penyesuaian-crud.md yang saya lampirkan.
+
+Rapikan dan uji alur tambah, lihat, edit, dan hapus di Kelola Menu. Tampilkan Hapus di setiap kartu. Menu tanpa pesanan bisa dihapus setelah konfirmasi. Untuk menu yang sudah dipesan, tampilkan Hapus sebagai tombol nonaktif dan sediakan Nonaktifkan jika menunya masih aktif.
+
+Gunakan route dan CateringService yang sudah ada. Laporkan hasil uji tiap operasi CRUD dan berhenti setelah diff siap saya tinjau.

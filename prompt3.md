@@ -4,44 +4,44 @@ Lanjutkan di branch latihan yang sudah punya migration tahap 1 dan template Blad
 
 ## File yang dibuat
 
-| File | Isi |
-|---|---|
-| `app/Http/Controllers/AuthController.php` | Validasi login, autentikasi Laravel, regenerasi sesi, tujuan berdasarkan role, dan logout. |
+| File                                          | Isi                                                                                                                                                  |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/Http/Controllers/AuthController.php`     | Validasi login, autentikasi Laravel, regenerasi sesi, tujuan berdasarkan role, dan logout.                                                           |
 | `app/Http/Controllers/CateringController.php` | Dashboard, CRUD menu, katalog, form dan penyimpanan pesanan, pesanan masuk, dan riwayat pelanggan. Validasi input serta respons HTTP dibuat di sini. |
-| `app/Services/CateringService.php` | Logika transaksi untuk menyimpan pesanan dan snapshot harga, menghapus atau menonaktifkan menu, serta menjaga urutan status. |
+| `app/Services/CateringService.php`            | Logika transaksi untuk menyimpan pesanan dan snapshot harga, menghapus atau menonaktifkan menu, serta menjaga urutan status.                         |
 
 ## File yang diperbarui
 
-| File | Perubahan |
-|---|---|
-| `routes/web.php` | Daftarkan route asli. Gunakan `guest` untuk login dan `auth` plus gate untuk halaman dan aksi tiap role. |
-| `app/Providers/AppServiceProvider.php` | Tambahkan gate `access-admin` dan `access-customer` memakai konstanta role dari model `User`. |
-| `bootstrap/app.php` | Arahkan pengguna yang sudah login dari halaman login ke route awal `/`. |
-| `database/seeders/DatabaseSeeder.php` | Buat dua akun dan tiga menu untuk lingkungan `local` atau `testing`. Seeder dapat dijalankan ulang tanpa menggandakan data. |
-| `resources/views/welcome.blade.php` | Ubah portal pilih peran menjadi form email dan kata sandi. |
-| `resources/views/layouts/admin.blade.php`, `resources/views/layouts/customer.blade.php`, `resources/views/components/brand.blade.php` | Gunakan navigasi route asli, nama dari sesi, dan logout lewat POST. |
-| `resources/views/admin/dashboard.blade.php` | Ganti kartu dan grafik fixture menjadi data yang dikirim controller. |
-| `resources/views/admin/menus/index.blade.php`, `resources/views/admin/menus/form.blade.php` | Hubungkan daftar, form tambah/edit bersama, dan aksi hapus atau nonaktifkan. Form edit bisa dibuka dengan parameter `?edit={id}`. |
-| `resources/views/admin/orders/index.blade.php`, `resources/views/components/order-table.blade.php` | Tampilkan relasi pelanggan dan menu, total historis, status, serta aksi status admin. |
-| `resources/views/customer/catalog/index.blade.php`, `resources/views/customer/orders/create.blade.php`, `resources/views/customer/orders/index.blade.php` | Pakai data asli untuk katalog, form porsi, dan pesanan pengguna yang login. |
-| `resources/views/components/menu-photo.blade.php` | Pertahankan ilustrasi lokal untuk menu contoh. Gunakan placeholder untuk menu lain. Foto tidak menjadi atribut database. |
-| `resources/js/app.js`, `resources/css/app.css` | Pertahankan SweetAlert2, estimasi harga di klien, dan styling yang dipakai. Lepas kode simulasi dan gaya elemen demo yang sudah tidak dipakai. |
-| `tests/Feature/ExampleTest.php`, `README.md` | Sesuaikan pengujian utama dan tulis cara menjalankan tahap 3. |
+| File                                                                                                                                                      | Perubahan                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `routes/web.php`                                                                                                                                          | Daftarkan route asli. Gunakan `guest` untuk login dan `auth` plus gate untuk halaman dan aksi tiap role.                                       |
+| `app/Providers/AppServiceProvider.php`                                                                                                                    | Tambahkan gate `access-admin` dan `access-customer` memakai konstanta role dari model `User`.                                                  |
+| `bootstrap/app.php`                                                                                                                                       | Arahkan pengguna yang sudah login dari halaman login ke route awal `/`.                                                                        |
+| `database/seeders/DatabaseSeeder.php`                                                                                                                     | Buat dua akun dan tiga menu untuk lingkungan `local` atau `testing`. Seeder dapat dijalankan ulang tanpa menggandakan data.                    |
+| `resources/views/welcome.blade.php`                                                                                                                       | Ubah portal pilih peran menjadi form email dan kata sandi.                                                                                     |
+| `resources/views/layouts/admin.blade.php`, `resources/views/layouts/customer.blade.php`, `resources/views/components/brand.blade.php`                     | Gunakan navigasi route asli, nama dari sesi, dan logout lewat POST.                                                                            |
+| `resources/views/admin/dashboard.blade.php`                                                                                                               | Ganti kartu dan grafik fixture menjadi data yang dikirim controller.                                                                           |
+| `resources/views/admin/menus/index.blade.php`, `resources/views/admin/menus/form.blade.php`                                                               | Hubungkan daftar, form tambah/edit bersama, dan aksi hapus atau nonaktifkan. Form edit bisa dibuka dengan parameter `?edit={id}`.              |
+| `resources/views/admin/orders/index.blade.php`, `resources/views/components/order-table.blade.php`                                                        | Tampilkan relasi pelanggan dan menu, total historis, status, serta aksi status admin.                                                          |
+| `resources/views/customer/catalog/index.blade.php`, `resources/views/customer/orders/create.blade.php`, `resources/views/customer/orders/index.blade.php` | Pakai data asli untuk katalog, form porsi, dan pesanan pengguna yang login.                                                                    |
+| `resources/views/components/menu-photo.blade.php`                                                                                                         | Pertahankan ilustrasi lokal untuk menu contoh. Gunakan placeholder untuk menu lain. Foto tidak menjadi atribut database.                       |
+| `resources/js/app.js`, `resources/css/app.css`                                                                                                            | Pertahankan SweetAlert2, estimasi harga di klien, dan styling yang dipakai. Lepas kode simulasi dan gaya elemen demo yang sudah tidak dipakai. |
+| `tests/Feature/ExampleTest.php`, `README.md`                                                                                                              | Sesuaikan pengujian utama dan tulis cara menjalankan tahap 3.                                                                                  |
 
 Hapus `resources/js/catering-preview.js` dan `resources/demo/catering.php` setelah referensinya diganti. Gunakan tiga migration dan tiga model tahap 1 yang sudah tersedia.
 
 ## Peta route
 
-| Akses | Metode dan URL | Aksi |
-|---|---|---|
-| Tamu | `GET /login`, `POST /login` | Tampilkan dan proses login. Batasi percobaan login. |
-| Sudah login | `GET /`, `POST /logout` | Arahkan sesuai role atau akhiri sesi. |
-| Admin | `GET /admin` | Dashboard. |
-| Admin | `GET /admin/menus`, `POST /admin/menus`, `PATCH /admin/menus/{menu}`, `DELETE /admin/menus/{menu}` | Kelola Menu. |
-| Admin | `GET /admin/orders`, `PATCH /admin/orders/{order}/status` | Pesanan Masuk dan perubahan status. |
-| Pelanggan | `GET /menus` | Katalog menu aktif. |
-| Pelanggan | `GET /menus/{menu}/order`, `POST /menus/{menu}/order` | Form Pemesanan dan penyimpanan pesanan. |
-| Pelanggan | `GET /orders` | Pesanan Saya. |
+| Akses       | Metode dan URL                                                                                     | Aksi                                                |
+| ----------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Tamu        | `GET /login`, `POST /login`                                                                        | Tampilkan dan proses login. Batasi percobaan login. |
+| Sudah login | `GET /`, `POST /logout`                                                                            | Arahkan sesuai role atau akhiri sesi.               |
+| Admin       | `GET /admin`                                                                                       | Dashboard.                                          |
+| Admin       | `GET /admin/menus`, `POST /admin/menus`, `PATCH /admin/menus/{menu}`, `DELETE /admin/menus/{menu}` | Kelola Menu.                                        |
+| Admin       | `GET /admin/orders`, `PATCH /admin/orders/{order}/status`                                          | Pesanan Masuk dan perubahan status.                 |
+| Pelanggan   | `GET /menus`                                                                                       | Katalog menu aktif.                                 |
+| Pelanggan   | `GET /menus/{menu}/order`, `POST /menus/{menu}/order`                                              | Form Pemesanan dan penyimpanan pesanan.             |
+| Pelanggan   | `GET /orders`                                                                                      | Pesanan Saya.                                       |
 
 ## Langkah dan aturan
 
@@ -63,3 +63,12 @@ Atur `.env` ke database MySQL lokal workshop. Jalankan `php artisan migrate --se
 - Jalankan `php artisan route:list`, `php artisan test`, dan `npm run build`. Tes otomatis memakai SQLite. Laporkan secara terpisah jika eksekusi di MySQL belum bisa dilakukan.
 
 Akhiri dengan daftar file, peta alur `route → controller → service/model → Blade`, dan hasil verifikasi. Berhenti setelah diff siap ditinjau sebelum commit atau push dari branch latihan mahasiswa.
+
+PROMPT:
+Lanjutkan tahap 3 Workshop Catering pada branch latihan saya yang sudah menyelesaikan tahap 1 dan 2. Ikuti prompt3.md yang saya lampirkan. Gunakan PRD, ERD, migration, model, dan tampilan Blade yang sudah ada sebagai acuan.
+
+Buat AuthController.php dan CateringController.php di app/Http/Controllers/. Gabungkan logika transaksi pesanan, hapus atau nonaktifkan menu, dan perubahan status di satu file app/Services/CateringService.php. Perbarui route, gate, seeder, dan form Blade sesuai peta file di prompt3.md.
+
+Sambungkan login dua role, CRUD menu, katalog, form pemesanan, pesanan masuk, riwayat pelanggan, dan grafik dashboard ke database. Ambil identitas pelanggan dari sesi login dan harga per porsi dari database. Simpan harga saat dipesan agar total riwayat tetap sama saat harga menu berubah. Status hanya boleh bergerak dari Menunggu ke Dikonfirmasi, lalu Selesai.
+
+Uji alur kedua role, akses silang, validasi, harga historis, dan pesanan pelanggan. Jalankan php artisan test dan npm run build. Catat apakah pengujian dilakukan di MySQL atau SQLite. Tampilkan daftar file yang diubah, peta route, dan hasil uji. Berhenti setelah diff siap saya tinjau sebelum commit atau push.

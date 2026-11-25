@@ -11,25 +11,34 @@ Lanjutkan pada branch latihan yang sudah menyelesaikan tahap 1–5. Gunakan PRD,
 
 ## 2. Skenario uji
 
-| ID | Skenario | Langkah dan hasil yang diharapkan |
-| --- | --- | --- |
-| T01 | Login, logout, dan hak akses | Tamu yang membuka halaman terlindungi diarahkan ke login. Kata sandi salah ditolak. Admin masuk ke dashboard dan pelanggan ke katalog. Akses silang ke halaman atau aksi role lain ditolak (403). Setelah logout, halaman terlindungi meminta login kembali. |
-| T02 | Registrasi | Daftar dari tautan pada halaman login. Coba konfirmasi kata sandi yang berbeda dan email duplikat, lalu daftar dengan data valid. Akun baru masuk ke katalog, bisa login kembali, dan tetap ber-role pelanggan walau request menyertakan role admin. |
-| T03 | Tambah, lihat, dan edit menu | Klik **Tambah menu** dan **Edit**. Form terbuka dalam modal. Coba input tidak valid dan pastikan modal muncul kembali dengan pesan serta nilai teks yang dipertahankan. Simpan menu dan cek nama, harga, serta status terbaru di admin dan katalog sesuai ketersediaannya. |
-| T04 | Upload foto | Coba JPG, PNG, atau WebP yang valid. Pastikan foto bisa dibuka dari kartu admin dan katalog. Tolak berkas non-gambar serta berkas di atas 2 MB. Edit tanpa foto baru mempertahankan foto lama. Jika foto diganti, URL baru tampil dan file lama sudah terhapus. |
-| T05 | Hapus menu tanpa pesanan | Tambah satu menu sementara dengan foto. Klik **Hapus**, batalkan konfirmasi, dan cek menu tetap ada. Ulangi dan konfirmasi, lalu pastikan menu hilang dari daftar dan katalog serta file fotonya terhapus. |
-| T06 | Pesan menu dan harga historis | Pesan 5 porsi dengan harga Rp25.000 per porsi. Estimasi di form dan total yang disimpan adalah **Rp125.000**. Jumlah nol, pecahan, atau di atas 65.535 ditolak. Edit harga menu menjadi Rp30.000 dan pastikan total pesanan lama tetap Rp125.000. Periksa bahwa harga dan ID pelanggan berasal dari server serta sesi login. |
-| T07 | Lindungi riwayat saat menu dinonaktifkan | Untuk menu yang sudah dipesan, **Hapus** terlihat nonaktif dan **Nonaktifkan** tersedia jika menu aktif. Nonaktifkan menu, lalu cek menu hilang dari katalog, pemesanan baru ditolak, dan riwayat serta foto tetap tersedia. |
-| T08 | Status dan kepemilikan pesanan | Admin mengubah **Menunggu → Dikonfirmasi → Selesai**. Lompatan Menunggu langsung ke Selesai dan perubahan status oleh pelanggan ditolak. Cek status di Pesanan Saya dan pastikan akun pelanggan lain tidak melihat pesanan tersebut. |
-| T09 | Dashboard | Cek dua grafik, ringkasan tujuh hari kalender, menu aktif, dan pesanan terbaru. Cocokkan indikator dengan data uji setelah membuat pesanan dan mengubah status. Nilai pesanan adalah jumlah porsi dikali harga saat dipesan, termasuk pesanan dari ketiga status dalam periode. |
-| T10 | Tampilan dan kondisi kosong | Coba viewport desktop dan ponsel. Cek navigasi, modal, notifikasi SweetAlert2, tabel yang bisa digulir secara horizontal, dan pesan saat daftar pesanan kosong. |
+| ID  | Skenario                                 | Langkah dan hasil yang diharapkan                                                                                                                                                                                                                                                                                            |
+| --- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T01 | Login, logout, dan hak akses             | Tamu yang membuka halaman terlindungi diarahkan ke login. Kata sandi salah ditolak. Admin masuk ke dashboard dan pelanggan ke katalog. Akses silang ke halaman atau aksi role lain ditolak (403). Setelah logout, halaman terlindungi meminta login kembali.                                                                 |
+| T02 | Registrasi                               | Daftar dari tautan pada halaman login. Coba konfirmasi kata sandi yang berbeda dan email duplikat, lalu daftar dengan data valid. Akun baru masuk ke katalog, bisa login kembali, dan tetap ber-role pelanggan walau request menyertakan role admin.                                                                         |
+| T03 | Tambah, lihat, dan edit menu             | Klik **Tambah menu** dan **Edit**. Form terbuka dalam modal. Coba input tidak valid dan pastikan modal muncul kembali dengan pesan serta nilai teks yang dipertahankan. Simpan menu dan cek nama, harga, serta status terbaru di admin dan katalog sesuai ketersediaannya.                                                   |
+| T04 | Upload foto                              | Coba JPG, PNG, atau WebP yang valid. Pastikan foto bisa dibuka dari kartu admin dan katalog. Tolak berkas non-gambar serta berkas di atas 2 MB. Edit tanpa foto baru mempertahankan foto lama. Jika foto diganti, URL baru tampil dan file lama sudah terhapus.                                                              |
+| T05 | Hapus menu tanpa pesanan                 | Tambah satu menu sementara dengan foto. Klik **Hapus**, batalkan konfirmasi, dan cek menu tetap ada. Ulangi dan konfirmasi, lalu pastikan menu hilang dari daftar dan katalog serta file fotonya terhapus.                                                                                                                   |
+| T06 | Pesan menu dan harga historis            | Pesan 5 porsi dengan harga Rp25.000 per porsi. Estimasi di form dan total yang disimpan adalah **Rp125.000**. Jumlah nol, pecahan, atau di atas 65.535 ditolak. Edit harga menu menjadi Rp30.000 dan pastikan total pesanan lama tetap Rp125.000. Periksa bahwa harga dan ID pelanggan berasal dari server serta sesi login. |
+| T07 | Lindungi riwayat saat menu dinonaktifkan | Untuk menu yang sudah dipesan, **Hapus** terlihat nonaktif dan **Nonaktifkan** tersedia jika menu aktif. Nonaktifkan menu, lalu cek menu hilang dari katalog, pemesanan baru ditolak, dan riwayat serta foto tetap tersedia.                                                                                                 |
+| T08 | Status dan kepemilikan pesanan           | Admin mengubah **Menunggu → Dikonfirmasi → Selesai**. Lompatan Menunggu langsung ke Selesai dan perubahan status oleh pelanggan ditolak. Cek status di Pesanan Saya dan pastikan akun pelanggan lain tidak melihat pesanan tersebut.                                                                                         |
+| T09 | Dashboard                                | Cek dua grafik, ringkasan tujuh hari kalender, menu aktif, dan pesanan terbaru. Cocokkan indikator dengan data uji setelah membuat pesanan dan mengubah status. Nilai pesanan adalah jumlah porsi dikali harga saat dipesan, termasuk pesanan dari ketiga status dalam periode.                                              |
+| T10 | Tampilan dan kondisi kosong              | Coba viewport desktop dan ponsel. Cek navigasi, modal, notifikasi SweetAlert2, tabel yang bisa digulir secara horizontal, dan pesan saat daftar pesanan kosong.                                                                                                                                                              |
 
 ## 3. Laporan akhir
 
 Tampilkan ringkasan perintah dan hasilnya, branch dan commit yang diuji, serta mesin database yang dipakai **untuk masing-masing jenis tes**. Isi tabel ini dengan hasil yang benar-benar diamati.
 
-| ID | Database dan cara uji | Hasil aktual | Status | Bukti atau catatan |
-| --- | --- | --- | --- | --- |
+| ID                 | Database dan cara uji                        | Hasil aktual      | Status                      | Bukti atau catatan                                   |
+| ------------------ | -------------------------------------------- | ----------------- | --------------------------- | ---------------------------------------------------- |
 | T01 dan seterusnya | SQLite otomatis, MySQL browser, atau lainnya | Isi dari eksekusi | Lulus / Gagal / Belum diuji | Output tes, tangkapan layar, atau langkah reproduksi |
 
 Untuk temuan gagal, tulis langkah reproduksi, hasil yang diharapkan, hasil aktual, dan dampaknya terhadap demo. Tutup dengan keputusan **Siap demo** atau **Perlu perbaikan**, beserta alasannya. Jika pengujian MySQL masih tertunda, sebutkan terpisah dari keberhasilan tes SQLite. Berhenti setelah laporan siap ditinjau.
+
+PROMPT:
+Lanjutkan ke tahap 6, testing akhir Workshop Catering, pada branch latihan saya yang sudah menyelesaikan tahap 1–5. Ikuti prompt6-testing.md yang saya lampirkan.
+
+Jalankan build Vite dan tes otomatis Laravel. Setelah itu, uji alur admin dan pelanggan di browser menggunakan dua sesi terpisah dan database MySQL lokal khusus testing. Cakup registrasi, login, hak akses, CRUD menu, upload foto, pemesanan, harga historis, perubahan status, dan dashboard.
+
+Laporkan hasil aktual setiap skenario sebagai Lulus, Gagal, atau Belum diuji. Pisahkan hasil tes otomatis SQLite dari hasil uji browser di MySQL. Jika ada kegagalan, tulis langkah reproduksi, hasil yang diharapkan, hasil aktual, dan dampaknya terhadap demo.
+
+Akhiri dengan keputusan Siap demo atau Perlu perbaikan. Berhenti setelah laporan siap saya tinjau.

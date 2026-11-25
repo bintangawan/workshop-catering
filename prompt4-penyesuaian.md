@@ -22,19 +22,19 @@ Lanjutkan dari hasil tahap 3 Workshop Catering pada branch latihan. Kerjakan tig
 
 ## Peta file
 
-| File | Pekerjaan |
-|---|---|
-| `routes/web.php` | Tambahkan route registrasi tamu. |
-| `app/Http/Controllers/AuthController.php` | Validasi registrasi, tetapkan role pelanggan, buat akun, dan autentikasi. |
-| `resources/views/welcome.blade.php` | Tautan daftar, form registrasi, dan tautan kembali ke login. |
-| `resources/views/admin/menus/index.blade.php` | Tombol dan dialog tambah/edit, serta pembukaan ulang saat terjadi error. |
-| `resources/views/admin/menus/form.blade.php` | Form multipart, input foto, tampilan foto sebelumnya, dan pesan kesalahan. |
-| `resources/js/app.js`, `resources/css/app.css` | Interaksi buka/tutup modal dan styling responsif. |
-| `app/Http/Controllers/CateringController.php` | Validasi upload dan arahkan penyimpanan menu ke service. |
-| `app/Services/CateringService.php` | Simpan menu dan file, ganti foto, dan bersihkan file setelah perubahan database. |
-| `database/migrations/2026_11_26_000003_add_image_path_to_menus_table.php` | Tambahkan dan rollback kolom foto opsional. |
-| `resources/views/components/menu-photo.blade.php` | Pakai URL foto unggahan atau visual cadangan. |
-| `tests/Feature/ExampleTest.php` | Cek registrasi pelanggan serta penyimpanan, penggantian, dan penghapusan foto. |
+| File                                                                      | Pekerjaan                                                                        |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `routes/web.php`                                                          | Tambahkan route registrasi tamu.                                                 |
+| `app/Http/Controllers/AuthController.php`                                 | Validasi registrasi, tetapkan role pelanggan, buat akun, dan autentikasi.        |
+| `resources/views/welcome.blade.php`                                       | Tautan daftar, form registrasi, dan tautan kembali ke login.                     |
+| `resources/views/admin/menus/index.blade.php`                             | Tombol dan dialog tambah/edit, serta pembukaan ulang saat terjadi error.         |
+| `resources/views/admin/menus/form.blade.php`                              | Form multipart, input foto, tampilan foto sebelumnya, dan pesan kesalahan.       |
+| `resources/js/app.js`, `resources/css/app.css`                            | Interaksi buka/tutup modal dan styling responsif.                                |
+| `app/Http/Controllers/CateringController.php`                             | Validasi upload dan arahkan penyimpanan menu ke service.                         |
+| `app/Services/CateringService.php`                                        | Simpan menu dan file, ganti foto, dan bersihkan file setelah perubahan database. |
+| `database/migrations/2026_11_26_000003_add_image_path_to_menus_table.php` | Tambahkan dan rollback kolom foto opsional.                                      |
+| `resources/views/components/menu-photo.blade.php`                         | Pakai URL foto unggahan atau visual cadangan.                                    |
+| `tests/Feature/ExampleTest.php`                                           | Cek registrasi pelanggan serta penyimpanan, penggantian, dan penghapusan foto.   |
 
 ## Verifikasi
 
@@ -45,3 +45,10 @@ Jalankan `php artisan migrate`, `php artisan storage:link`, `npm run build`, dan
 3. Unggah foto valid, cek tampil di admin dan pelanggan, edit tanpa foto baru, lalu ganti foto. Coba file non-gambar dan file di atas batas ukuran. Pastikan file dibuang saat menu dihapus, dan tetap ada saat menu hanya dinonaktifkan.
 
 Laporkan daftar file, hasil menjalankan migration, dan hasil uji. Berhenti setelah perubahan siap ditinjau sebelum commit atau push dari branch latihan.
+
+PROMPT:
+Lanjutkan dari hasil tahap 3 Workshop Catering di branch latihan saya. Ikuti prompt4-penyesuaian.md yang saya lampirkan.
+
+Kerjakan tiga penyesuaian saja: registrasi akun pelanggan, modal tambah/edit menu, dan upload foto menu. Gunakan controller, Blade, dan CateringService.php yang sudah ada. Buat migration tambahan untuk menus.image_path dan jalankan tanpa reset database.
+
+Uji daftar dan login ulang, akses pelanggan ke halaman admin, modal yang terbuka kembali saat validasi gagal, serta upload dan penggantian foto sampai tampil di katalog. Laporkan daftar file dan hasil tes. Berhenti setelah diff siap saya tinjau sebelum commit atau push.
