@@ -67,3 +67,9 @@ Migration dibuat dalam urutan `users` (termasuk `role`), `menus` (`name`, `descr
 - **Frontend** — Vite 8, Laravel Vite Plugin 3, Tailwind CSS 4, plugin Tailwind untuk Vite, dan SweetAlert2 11. Blade memuat CSS dan JavaScript sekali melalui layout utama.
 
 Versi rinci disimpan di `composer.lock` dan `package-lock.json` agar instalasi di laptop peserta konsisten.
+
+## Pratinjau tahap 2
+
+Di branch `dev-bintang`, buka `/` dan pilih **Admin** atau **Pelanggan**. Jalankan `npm ci`, `npm run build`, dan server Laravel seperti di atas. Pratinjau dapat dijalankan dengan MySQL dimatikan karena halaman menggunakan fixture di `resources/demo/catering.php`.
+
+Dashboard dan grafik memakai snapshot fixture. Perubahan menu simulasi berlaku sampai halaman dimuat ulang. Pesanan simulasi dan perubahan status tersedia di sesi peramban yang sama. Detail instruksi latihan tersedia di [prompt2.md](prompt2.md).
