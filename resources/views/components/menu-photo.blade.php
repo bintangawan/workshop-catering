@@ -6,7 +6,9 @@
         default => null,
     };
 @endphp
-@if ($photo)
+@if ($menu->image_path)
+    <img class="menu-photo" src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($menu->image_path) }}" alt="{{ $menu->name }}" width="640" height="380">
+@elseif ($photo)
     <img class="menu-photo" src="{{ asset($photo) }}" alt="{{ $menu->name }}" width="640" height="380">
 @else
     <div class="menu-photo menu-placeholder"><x-icon name="menu" class="size-9" /></div>

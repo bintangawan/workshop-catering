@@ -1,4 +1,4 @@
-<form class="grid gap-4" method="POST" action="{{ $editingMenu ? route('admin.menus.update', $editingMenu) : route('admin.menus.store') }}">
+<form class="grid gap-4" method="POST" enctype="multipart/form-data" action="{{ $editingMenu ? route('admin.menus.update', $editingMenu) : route('admin.menus.store') }}">
     @csrf
     @if ($editingMenu) @method('PATCH') @endif
     <label class="field"><span>Nama menu</span><input name="name" maxlength="150" value="{{ old('name', $editingMenu?->name) }}" required></label>
@@ -7,6 +7,15 @@
     @error('price') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror
     <label class="field"><span>Deskripsi</span><textarea name="description" maxlength="1000" rows="3">{{ old('description', $editingMenu?->description) }}</textarea></label>
     @error('description') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror
+    @if ($editingMenu?->image_path)
+        <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($editingMenu->image_path) }}" class="h-20 w-28 rounded-lg object-cover" alt="Foto menu saat ini">
+    @endif
+    <label class="field">
+        <span>{{ $editingMenu ? 'Ganti foto menu' : 'Foto menu' }}</span>
+        <input name="image" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="menu-photo-help">
+    </label>
+    <small id="menu-photo-help" class="text-muted">{{ $editingMenu ? 'Kosongkan untuk mempertahankan foto. ' : '' }}JPG, PNG, atau WebP, maksimal 2 MB.</small>
+    @error('image') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror
     <input type="hidden" name="is_active" value="0">
     <label class="check-field"><input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingMenu?->is_active ?? true))> Aktif di katalog</label>
     @error('is_active') <span class="text-sm text-red-700" role="alert">{{ $message }}</span> @enderror

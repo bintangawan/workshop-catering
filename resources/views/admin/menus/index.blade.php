@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-heading">
         <div><h1>Kelola menu</h1><p>Atur menu, harga per porsi, dan ketersediaan di katalog.</p></div>
-        <a href="#menu-form" class="button"><x-icon name="plus" /> {{ $editingMenu ? 'Ke form edit' : 'Tambah menu' }}</a>
+        <button type="button" class="button" data-open-menu-dialog><x-icon name="plus" /> Tambah menu</button>
     </div>
 
     <div class="menu-grid">
@@ -15,7 +15,7 @@
                     <p>{{ $menu->description }}</p>
                     <div class="menu-price"><strong>Rp{{ number_format($menu->price, 0, ',', '.') }}</strong><small> / porsi</small></div>
                     <div class="menu-actions">
-                        <a class="button button-small button-outline" href="{{ route('admin.menus', ['page' => $menus->currentPage(), 'edit' => $menu->id]).'#menu-form' }}">Edit</a>
+                        <a class="button button-small button-outline" href="{{ route('admin.menus', ['page' => $menus->currentPage(), 'edit' => $menu->id]) }}">Edit</a>
                         @if (!$menu->orders_exists || $menu->is_active)
                             <form method="POST" action="{{ route('admin.menus.destroy', $menu) }}" data-confirm="{{ $menu->orders_exists ? 'Nonaktifkan menu ini?' : 'Hapus menu ini?' }}">
                                 @csrf
@@ -32,11 +32,13 @@
     </div>
     <div class="mt-5">{{ $menus->links() }}</div>
 
-    <section class="panel order-form mt-5 max-w-xl" id="menu-form">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-            <h2>{{ $editingMenu ? 'Edit menu' : 'Tambah menu' }}</h2>
-            @if ($editingMenu)<a class="text-link" href="{{ route('admin.menus') }}#menu-form">Batal edit</a>@endif
+    <dialog class="menu-dialog" data-menu-dialog @if($editingMenu || $errors->any()) data-open-on-load @endif aria-labelledby="menu-dialog-title">
+        <div class="grid gap-4 p-5 sm:p-6">
+            <div class="flex items-start justify-between gap-3">
+                <h2 id="menu-dialog-title">{{ $editingMenu ? 'Edit menu' : 'Tambah menu' }}</h2>
+                <button type="button" data-close-menu-dialog class="button button-small button-quiet">Tutup</button>
+            </div>
+            @include('admin.menus.form')
         </div>
-        @include('admin.menus.form')
-    </section>
+    </dialog>
 @endsection

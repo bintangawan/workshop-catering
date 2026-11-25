@@ -44,3 +44,21 @@ if (orderForm) {
     quantity.addEventListener('input', updateEstimate);
     updateEstimate();
 }
+
+const menuDialog = document.querySelector('[data-menu-dialog]');
+
+if (menuDialog) {
+    const addButton = document.querySelector('[data-open-menu-dialog]');
+    const editUrl = new URL(window.location.href);
+
+    addButton.addEventListener('click', () => menuDialog.showModal());
+    menuDialog.querySelector('[data-close-menu-dialog]').addEventListener('click', () => menuDialog.close());
+    menuDialog.addEventListener('close', () => {
+        if (editUrl.searchParams.has('edit')) {
+            editUrl.searchParams.delete('edit');
+            window.location.assign(editUrl);
+        }
+    });
+
+    if (menuDialog.hasAttribute('data-open-on-load')) menuDialog.showModal();
+}

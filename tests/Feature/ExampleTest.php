@@ -6,6 +6,8 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -71,5 +73,66 @@ class ExampleTest extends TestCase
         $this->actingAs($customer)->get(route('order', $menu))->assertNotFound();
         $this->post(route('order.store', $menu), ['quantity' => 1])->assertSessionHasErrors('quantity');
         $this->get('/orders')->assertOk()->assertSee('Rp125.000')->assertSee('Selesai');
+    }
+
+    public function test_guest_registration_always_creates_a_customer(): void
+    {
+        $this->withoutVite();
+        $data = [
+            'name' => 'Pelanggan Baru',
+            'email' => 'Baru@catering.test',
+            'password' => 'Workshop123!',
+            'password_confirmation' => 'Workshop123!',
+            'role' => 'admin',
+        ];
+
+        $this->get('/login')->assertSee('Daftar sebagai pelanggan');
+        $this->get('/register')->assertOk();
+        $this->post('/register', array_replace($data, ['password_confirmation' => 'salah']))->assertSessionHasErrors('password');
+        $this->post('/register', $data)->assertRedirect(route('catalog'));
+        $user = User::whereEmail('baru@catering.test')->sole();
+        $this->assertAuthenticatedAs($user);
+        $this->assertSame(User::ROLE_CUSTOMER, $user->role);
+        $this->assertNotSame($data['password'], $user->password);
+        $this->get('/admin')->assertForbidden();
+        $this->post('/logout');
+        $this->post('/register', $data)->assertSessionHasErrors('email');
+        $this->post('/login', ['email' => $data['email'], 'password' => $data['password']])->assertRedirect(route('home'));
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_menu_photos_are_validated_replaced_and_deleted_with_the_menu(): void
+    {
+        Storage::fake('public');
+        $this->seed();
+        $admin = User::whereEmail('admin@catering.test')->sole();
+        $customer = User::whereEmail('pelanggan@catering.test')->sole();
+        $data = ['name' => 'Menu Baru', 'price' => 25000, 'is_active' => 1];
+
+        $this->actingAs($admin);
+        $this->post('/admin/menus', $data + ['image' => UploadedFile::fake()->create('dokumen.pdf', 100, 'application/pdf')])
+            ->assertSessionHasErrors('image');
+        $this->assertDatabaseMissing('menus', ['name' => 'Menu Baru']);
+        $this->post('/admin/menus', $data + [
+            'image' => new UploadedFile(public_path('demo/ayam-matah.webp'), 'foto.webp', null, null, true),
+        ])->assertRedirect(route('admin.menus'));
+
+        $menu = Menu::whereName('Menu Baru')->sole();
+        $firstPath = $menu->image_path;
+        Storage::disk('public')->assertExists($firstPath);
+        $this->patch(route('admin.menus.update', $menu), $data)->assertRedirect(route('admin.menus'));
+        $this->assertSame($firstPath, $menu->fresh()->image_path);
+
+        $this->patch(route('admin.menus.update', $menu), $data + [
+            'image' => new UploadedFile(public_path('demo/ayam-bakar.webp'), 'baru.webp', null, null, true),
+        ])->assertRedirect(route('admin.menus'));
+
+        $secondPath = $menu->fresh()->image_path;
+        Storage::disk('public')->assertMissing($firstPath);
+        Storage::disk('public')->assertExists($secondPath);
+        $this->withoutVite()->actingAs($customer)->get('/menus')->assertOk()->assertSee('/storage/'.$secondPath);
+        $this->actingAs($admin)->delete(route('admin.menus.destroy', $menu))->assertRedirect(route('admin.menus'));
+        Storage::disk('public')->assertMissing($secondPath);
+        $this->assertModelMissing($menu);
     }
 }

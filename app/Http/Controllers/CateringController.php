@@ -57,14 +57,14 @@ class CateringController extends Controller
 
     public function storeMenu(Request $request): RedirectResponse
     {
-        Menu::create($this->menuData($request));
+        $this->catering->saveMenu(new Menu, $this->menuData($request));
 
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan.');
     }
 
     public function updateMenu(Request $request, Menu $menu): RedirectResponse
     {
-        $menu->update($this->menuData($request));
+        $this->catering->saveMenu($menu, $this->menuData($request));
 
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil diperbarui.');
     }
@@ -132,6 +132,7 @@ class CateringController extends Controller
             'description' => ['nullable', 'string', 'max:1000'],
             'price' => ['required', 'integer', 'between:1,4294967295'],
             'is_active' => ['required', 'boolean'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
     }
 }

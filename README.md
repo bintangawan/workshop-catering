@@ -40,7 +40,7 @@ Buka [http://127.0.0.1:8000](http://127.0.0.1:8000). Saat mengedit Blade dan ase
 | `app/Http/Controllers/` | Controller HTTP. Validasi input form dan respons berada di sini untuk praktik awal. |
 | `app/Services/CateringService.php` | Aturan pemesanan, hapus atau nonaktifkan menu, dan transisi status |
 | `app/Models/` | Model `User`, `Menu`, dan `Order` beserta relasi Eloquent |
-| `database/migrations/` | Tiga migration yang dibuat pada tahap 1 |
+| `database/migrations/` | Migration tahap 1 dan kolom foto menu tahap 4 |
 | `resources/views/layouts/app.blade.php` | Layout utama Blade yang memuat aset Vite secara global |
 | `resources/views/admin/` | Blade untuk pengelolaan menu dan pesanan masuk |
 | `resources/views/customer/` | Blade untuk katalog, formulir pemesanan, dan riwayat pelanggan |
@@ -87,3 +87,7 @@ Buka `/login`. Seeder menyediakan akun berikut pada lingkungan `local` atau `tes
 | Pelanggan | `pelanggan@catering.test` | `Workshop123!` |
 
 Seeder juga menambahkan tiga menu. Buat pesanan pertama dari akun pelanggan untuk melihat metrik dashboard terisi. Nilai pesanan pada dashboard mencakup ketiga status selama tujuh hari kalender terakhir (WIB). Jalankan `php artisan test` dengan ekstensi PDO SQLite untuk pengujian otomatis. Lihat [prompt3.md](prompt3.md) untuk peta file dan langkah pengerjaan. Prototipe dengan data dummy dapat dilihat pada commit `6a32291`.
+
+## Penyesuaian tahap 4
+
+Jalankan `php artisan migrate`, `php artisan storage:link`, dan `npm run build` setelah mengambil perubahan. Setel `APP_URL` ke alamat server lokal, misalnya `http://127.0.0.1:8000`. Pelanggan bisa mendaftar lewat halaman login. Admin menggunakan modal Kelola Menu untuk menambah atau mengganti foto. Instruksi latihan tersedia di [prompt4-penyesuaian.md](prompt4-penyesuaian.md).

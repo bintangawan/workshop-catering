@@ -6,25 +6,71 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class CateringService
 {
+    public function saveMenu(Menu $menu, array $data): void
+    {
+        $image = $data['image'] ?? null;
+        unset($data['image']);
+
+        $newPath = $image?->store('menus', 'public');
+
+        if ($newPath === false) {
+            throw ValidationException::withMessages(['image' => 'Foto gagal disimpan. Coba unggah lagi.']);
+        }
+
+        try {
+            $oldPath = DB::transaction(function () use ($menu, $data, $newPath) {
+                $record = $menu->exists ? Menu::query()->lockForUpdate()->findOrFail($menu->id) : $menu;
+                $record->fill($data);
+                $oldPath = $newPath !== null ? $record->image_path : null;
+
+                if ($newPath !== null) {
+                    $record->image_path = $newPath;
+                }
+
+                $record->save();
+
+                return $oldPath;
+            });
+        } catch (Throwable $exception) {
+            if ($newPath !== null) {
+                Storage::disk('public')->delete($newPath);
+            }
+
+            throw $exception;
+        }
+
+        if ($oldPath !== null) {
+            Storage::disk('public')->delete($oldPath);
+        }
+    }
+
     public function deleteMenu(Menu $menu): bool
     {
-        return DB::transaction(function () use ($menu) {
+        [$deleted, $imagePath] = DB::transaction(function () use ($menu) {
             $lockedMenu = Menu::query()->lockForUpdate()->findOrFail($menu->id);
 
             if ($lockedMenu->orders()->exists()) {
                 $lockedMenu->update(['is_active' => false]);
 
-                return false;
+                return [false, null];
             }
 
             $lockedMenu->delete();
 
-            return true;
+            return [true, $lockedMenu->image_path];
         });
+
+        if ($imagePath !== null) {
+            Storage::disk('public')->delete($imagePath);
+        }
+
+        return $deleted;
     }
 
     public function placeOrder(User $customer, Menu $menu, int $quantity): Order
